@@ -20,8 +20,8 @@ final class QuizViewController: UIViewController {
         let label = UILabel()
         label.text = Strings.titleLabel.rawValue
         label.frame.size = CGSize(width: 327, height: 30)
-        label.font = UIFont(name: "SF Pro", size: 50)
-//        label.font = UIFont(name: "SF pro display", size: 42)
+        label.font = UIFont(name: "SFProDisplay-Bold", size: 26)
+
         
         return label
     }()
@@ -35,6 +35,10 @@ final class QuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        for family in UIFont.familyNames.sorted() {
+//            let names = UIFont.fontNames(forFamilyName: family)
+//            print("Family: \(family) Font names: \(names)")
+//        }
         view.backgroundColor = .lightGray
         check()
     }
