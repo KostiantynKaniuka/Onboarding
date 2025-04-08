@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class QuizCell: UITableViewCell {
+    
     private let quizCellId = "quizID"
     
     private let customBackgroundView: UIView = {
@@ -20,7 +21,7 @@ final class QuizCell: UITableViewCell {
         return view
     }()
     
-    private let customSelectedBackgroundView: UIView? = {
+    private let customSelectedBackgroundView: UIView = {
         let motherView = UIView()
         let view = UIView()
         view.backgroundColor = UIColor(named: "SelectedCellColor")
@@ -43,14 +44,7 @@ final class QuizCell: UITableViewCell {
         return label
     }()
     
-    override class func awakeFromNib() {
-        super.awakeFromNib()
-        
-   
-    }
-    
-
-    
+  
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
           super.init(style: style, reuseIdentifier: reuseIdentifier)
           configureView()
@@ -86,5 +80,12 @@ final class QuizCell: UITableViewCell {
     func setText(_ text: String?) {
         cellLabel.text = text ?? ""
     }
-
+    
+    func switchTextColor(_cell isTapped: Bool) {
+        if isTapped {
+            cellLabel.textColor = .white
+        } else {
+            cellLabel.textColor = .black
+        }
+    }
 }
