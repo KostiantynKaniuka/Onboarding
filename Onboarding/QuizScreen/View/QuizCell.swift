@@ -10,19 +10,17 @@ import SnapKit
 
 final class QuizCell: UITableViewCell {
     
-    private let quizCellId = "quizID"
-    
     private let customBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-
+        
         return view
     }()
     
     private let customSelectedBackgroundView: UIView = {
-        let motherView = UIView()
+        let motherView = UIView() // used to add space between cells
         let view = UIView()
         view.backgroundColor = UIColor(named: "SelectedCellColor")
         view.layer.cornerRadius = 16
@@ -44,12 +42,12 @@ final class QuizCell: UITableViewCell {
         return label
     }()
     
-  
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-          super.init(style: style, reuseIdentifier: reuseIdentifier)
-          configureView()
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureView()
         setUpConstraints()
-      }
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -61,7 +59,7 @@ final class QuizCell: UITableViewCell {
         backgroundView = customBackgroundView
         selectedBackgroundView = customSelectedBackgroundView
     }
-  
+    
     
     private func setUpConstraints() {
         contentView.bounds.size.height = 100
@@ -77,6 +75,8 @@ final class QuizCell: UITableViewCell {
         }
     }
     
+    
+    //MARK: - Global methods
     func setText(_ text: String?) {
         cellLabel.text = text ?? ""
     }
