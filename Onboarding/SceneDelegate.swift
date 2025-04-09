@@ -15,7 +15,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
                let window = UIWindow(windowScene: windowScene)
                
-               let initialVC = QuizViewController()
+               let initialVC = SubscriptionViewController()
                let navController = UINavigationController(rootViewController: initialVC)
                window.rootViewController = navController
                window.makeKeyAndVisible()

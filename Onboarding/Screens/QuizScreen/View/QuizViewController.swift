@@ -63,14 +63,8 @@ final class QuizViewController: UIViewController {
     }()
     
     //MARK: - Lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        for family in UIFont.familyNames.sorted() {
-//            let names = UIFont.fontNames(forFamilyName: family)
-//            print("Family: \(family) Font names: \(names)")
-//        }
-        
         view.backgroundColor = UIColor(named: Strings.appBackgroundColor.rawValue)
         quizTableView.delegate = self
         quizTableView.dataSource = self
@@ -79,7 +73,6 @@ final class QuizViewController: UIViewController {
         bindContinueButton()
         continueButton.addTarget(self, action: #selector(moveForward), for: .touchUpInside)
     }
-    
     
     //MARK: - Constraints
     private func setUpConstraints() {
