@@ -7,7 +7,13 @@
 
 import Foundation
 
-struct QuizModel {
-    let subtitle: String
-    let options: [String]
+
+struct QuizResponse: Decodable {
+    let items: [QuizItem]
+}
+
+struct QuizItem: Decodable, Identifiable {
+    let id: Int
+    let question: String
+    let answers: [String]
 }
