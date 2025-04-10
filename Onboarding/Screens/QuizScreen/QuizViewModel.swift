@@ -17,13 +17,14 @@ enum OnboardingStage {
         switch self {
         case .occupation: return .age
         case .age: return .final
-        case .final: return .occupation // back to first screen if close sail screen
+        case .final: return .occupation // returning quizItem data to beginning if close sail screen
         }
     }
 }
 
 final class QuizViewModel {
     private var networkManager: HTTPClientProtocol
+    
     private var quizItems: [QuizItem] = []
     private(set) var quizItem = CurrentValueSubject<QuizItem, Never>(QuizItem(id: 0, question: "", answers: []))
     
