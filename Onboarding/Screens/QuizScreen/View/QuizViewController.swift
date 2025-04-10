@@ -19,6 +19,7 @@ final class QuizViewController: UIViewController {
     
     //MARK: - Stored properties
     private let quizViewModel = QuizViewModel(networkManager: NetworkManager())
+    private let subscriptionScreen = SubscriptionViewController()
     private var bag = Set<AnyCancellable>()
     var indexPathToDeselect = IndexPath()
     
@@ -127,7 +128,7 @@ final class QuizViewController: UIViewController {
         } // preventing cell text Color to became white during next stage of onboarding
         
         if quizViewModel.onboardingStage == .final {
-            print("navigated to the sail screen")
+            navigationController?.pushViewController(subscriptionScreen, animated: true)
         }
             let nextStage = quizViewModel.onboardingStage.next
             quizViewModel.onboardingStage = nextStage

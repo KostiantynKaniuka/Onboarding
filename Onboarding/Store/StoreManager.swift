@@ -12,18 +12,10 @@ import StoreKit
 final class StoreManager {
     private let productId = ["com.premiumsub.id"]
     
+     private(set) var purchasedProductIDs = Set<String>()
      private(set) var products: [Product] = []
      private var productsLoaded = false
-     private var updates: Task<Void, Never>? = nil
-    
-     private(set) var purchasedProductIDs = Set<String>()
-
-       var hasUnlockedPro: Bool {
-          return !self.purchasedProductIDs.isEmpty
-       }
-    
-    
-    
+     private var updates: Task<Void, Never>? = nil // task for watching transactions status
     
     init() {
         Task {
@@ -41,20 +33,6 @@ final class StoreManager {
         updates?.cancel()
     }
     
-    func updatePurchasedProducts() async {
-           for await result in Transaction.currentEntitlements {
-               guard case .verified(let transaction) = result else {
-                   continue
-               }
-
-               if transaction.revocationDate == nil {
-                   self.purchasedProductIDs.insert(transaction.productID)
-               } else {
-                   self.purchasedProductIDs.remove(transaction.productID)
-               }
-           }
-       }
-    
     private func observeTransactionUpdates() -> Task<Void, Never> {
             Task(priority: .background) { [unowned self] in
                 for await _ in Transaction.updates {
@@ -67,6 +45,20 @@ final class StoreManager {
            guard !self.productsLoaded else { return }
            self.products = try await Product.products(for: productId)
            self.productsLoaded = true
+       }
+    
+    func updatePurchasedProducts() async {
+           for await result in Transaction.currentEntitlements {
+               guard case .verified(let transaction) = result else {
+                   continue
+               }
+
+               if transaction.revocationDate == nil {
+                   self.purchasedProductIDs.insert(transaction.productID)
+               } else {
+                   self.purchasedProductIDs.remove(transaction.productID)
+               }
+           }
        }
     
     func purchase(_ product: Product) async throws {
@@ -90,7 +82,4 @@ final class StoreManager {
             break
         }
     }
-    
-    
-    
 }

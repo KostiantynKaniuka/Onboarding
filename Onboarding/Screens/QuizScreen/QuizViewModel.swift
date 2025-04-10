@@ -24,6 +24,7 @@ enum OnboardingStage {
 
 final class QuizViewModel {
     private var networkManager: HTTPClientProtocol
+    
     private var quizItems: [QuizItem] = []
     private(set) var quizItem = CurrentValueSubject<QuizItem, Never>(QuizItem(id: 0, question: "", answers: []))
     

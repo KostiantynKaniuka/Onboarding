@@ -90,6 +90,8 @@ final class SubscriptionViewController: UIViewController {
         
         return label
     }()
+    
+
         
     //MARK: - Lifecycle
  
@@ -99,16 +101,31 @@ final class SubscriptionViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "AppBackground")
         startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+        setUpNavigationCrossItem()
         setUpConstraints()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-      
-       // startButton.titleLabel?.text = "\(storeManager.products.first!.displayName)"
+        navigationItem.hidesBackButton = true
     }
     
     //MARK: - Methods
+    private func setUpNavigationCrossItem() {
+        let crossButton = UIBarButtonItem(
+            image: UIImage(systemName: "xmark")?.withRenderingMode(.automatic),
+            style: .plain,
+            target: self,
+            action: #selector(crossButtonTapped)
+        )
+        crossButton.tintColor = .black
+        self.navigationController?.navigationBar.tintColor = .black
+          navigationItem.rightBarButtonItem = crossButton
+    }
+    
+    @objc private func crossButtonTapped () {
+        navigationController?.popViewController(animated: true)
+    }
     
     @objc private func startButtonTapped() {
         Task {
@@ -118,9 +135,7 @@ final class SubscriptionViewController: UIViewController {
                 print(error.localizedDescription)
             }
         }
-      
     }
-    
     
     //MARK: - Constraints
     private func setUpConstraints() {
@@ -152,7 +167,7 @@ final class SubscriptionViewController: UIViewController {
         stackView.snp.makeConstraints { make in
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-8)
             make.centerX.equalToSuperview()
-            make.height.greaterThanOrEqualTo(20) // Set a minimum height
+            make.height.greaterThanOrEqualTo(20)
                 make.width.lessThanOrEqualTo(view.snp.width).offset(-32)
         }
         
