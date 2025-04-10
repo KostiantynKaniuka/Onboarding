@@ -17,7 +17,7 @@ enum OnboardingStage {
         switch self {
         case .occupation: return .age
         case .age: return .final
-        case .final: return .occupation // back to first screen if close sail screen
+        case .final: return .occupation // returning quizItem data to beginning if close sail screen
         }
     }
 }

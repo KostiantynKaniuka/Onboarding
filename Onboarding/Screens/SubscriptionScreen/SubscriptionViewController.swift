@@ -86,35 +86,13 @@ final class SubscriptionViewController: UIViewController {
         
         return label
     }()
-    
-    private let termOfUse: UITextView = {
-        let textView = UITextView()
-        textView.text = "Terms of Use,"
-        textView.backgroundColor = .clear
-       
-        let color = UIColor(named: "hyperlinkcolor")
-        let linkColor = color
-        let attributedPrivacy = NSMutableAttributedString(string: "Terms of Use,")
-        let privatelinkRange = NSRange(location: 0, length: textView.text.count)
-        let privatelinkColor = color
-        attributedPrivacy.addAttribute(.link, value: "https://images.steamusercontent.com/ugc/949591360446272042/2EAD55272BDBA9A2999440F5A357566256D537DF/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false", range: privatelinkRange)
-        attributedPrivacy.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: privatelinkRange)
-        attributedPrivacy.addAttribute(.underlineColor, value: linkColor as Any, range: privatelinkRange)
-        textView.linkTextAttributes = [.foregroundColor: privatelinkColor as Any]
-        textView.attributedText = attributedPrivacy
         
-        return textView
-    }()
-    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "AppBackground")
         setUpConstraints()
     }
-    
-    
-    
     
     private func setUpConstraints() {
         view.addSubview(image)
@@ -139,9 +117,7 @@ final class SubscriptionViewController: UIViewController {
             make.left.equalToSuperview().offset(32)
         }
                 
-        
         let stackView = makeHyperLinks()
-        
         
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -159,8 +135,6 @@ final class SubscriptionViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.bottom.equalTo(stackView.snp.top).offset(-16)
         }
-        
-        
     }
 }
 
@@ -172,58 +146,44 @@ private extension SubscriptionViewController {
         verticalStackView.distribution = .equalSpacing
         verticalStackView.alignment = .center
         verticalStackView.spacing = 8
-        
+
         let linksTextView = UITextView()
         linksTextView.backgroundColor = .clear
         linksTextView.isScrollEnabled = false
         linksTextView.isEditable = false
-        linksTextView.textContainerInset = UIEdgeInsets.zero
+        linksTextView.textContainerInset = .zero
         linksTextView.textContainer.lineFragmentPadding = 0
-        
+
         linksTextView.translatesAutoresizingMaskIntoConstraints = false
         linksTextView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
+
         let color = UIColor(named: "hyperlinkcolor") ?? .systemBlue
-        let attributedString = NSMutableAttributedString()
         let font = UIFont(name: "SFProDisplay-Regular", size: 12) ?? UIFont.systemFont(ofSize: 12)
+
+        let attributedString = NSMutableAttributedString()
         
-        let termsText = "Terms of Use"
-        let termsURL = termsUrl
-        let termsString = NSMutableAttributedString(string: termsText)
-        let termsRange = NSRange(location: 0, length: termsText.count)
-        termsString.addAttribute(.link, value: termsURL, range: termsRange)
-        termsString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: termsRange)
-        termsString.addAttribute(.font, value: font, range: termsRange)
-        attributedString.append(termsString)
-        
+        // Add the hyperlinks
+        attributedString.append(makeHyperlink(text: "Terms of Use", url: termsUrl, font: font))
         attributedString.append(NSAttributedString(string: ", ", attributes: [.font: font]))
-        
-        let privacyText = "Privacy Policy"
-        let privacyURL = termsUrl
-        let privacyString = NSMutableAttributedString(string: privacyText)
-        let privacyRange = NSRange(location: 0, length: privacyText.count)
-        privacyString.addAttribute(.link, value: privacyURL, range: privacyRange)
-        privacyString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: privacyRange)
-        privacyString.addAttribute(.font, value: font, range: privacyRange)
-        attributedString.append(privacyString)
-        
+        attributedString.append(makeHyperlink(text: "Privacy Policy", url: termsUrl, font: font))
         attributedString.append(NSAttributedString(string: ", ", attributes: [.font: font]))
-        
-        let subscriptionText = "Subscription Terms"
-        let subscriptionURL = termsUrl
-        let subscriptionString = NSMutableAttributedString(string: subscriptionText)
-        let subscriptionRange = NSRange(location: 0, length: subscriptionText.count)
-        subscriptionString.addAttribute(.link, value: subscriptionURL, range: subscriptionRange)
-        subscriptionString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: subscriptionRange)
-        subscriptionString.addAttribute(.font, value: font, range: subscriptionRange)
-        attributedString.append(subscriptionString)
-        
+        attributedString.append(makeHyperlink(text: "Subscription Terms", url: termsUrl, font: font))
+
         linksTextView.linkTextAttributes = [.foregroundColor: color]
         linksTextView.attributedText = attributedString
-        
+
         verticalStackView.addArrangedSubview(conditionsLabel)
         verticalStackView.addArrangedSubview(linksTextView)
-        
+
         return verticalStackView
+    }
+
+     func makeHyperlink(text: String, url: String, font: UIFont) -> NSAttributedString {
+        let range = NSRange(location: 0, length: text.count)
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(.link, value: url, range: range)
+        attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: range)
+        attributedString.addAttribute(.font, value: font, range: range)
+        return attributedString
     }
 }
