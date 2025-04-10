@@ -91,12 +91,8 @@ final class SubscriptionViewController: UIViewController {
         return label
     }()
     
-
-        
     //MARK: - Lifecycle
  
-    
-  
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "AppBackground")
