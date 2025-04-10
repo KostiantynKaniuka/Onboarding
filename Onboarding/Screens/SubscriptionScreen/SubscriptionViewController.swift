@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 final class SubscriptionViewController: UIViewController {
+    //MARK: - Properties
+    private var storeManager = StoreManager()
+    
     private let termsUrl = "https://images.steamusercontent.com/ugc/949591360446272042/2EAD55272BDBA9A2999440F5A357566256D537DF/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
     
     private let image: UIImageView = {
@@ -18,6 +21,7 @@ final class SubscriptionViewController: UIViewController {
         return image
     }()
     
+    //MARK: - UI properties
     private let headTitleLabel: UILabel = {
         let label = UILabel ()
         label.font = UIFont(name: "SFProDisplay-Bold", size: 32)
@@ -88,12 +92,37 @@ final class SubscriptionViewController: UIViewController {
     }()
         
     //MARK: - Lifecycle
+ 
+    
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "AppBackground")
+        startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         setUpConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+      
+       // startButton.titleLabel?.text = "\(storeManager.products.first!.displayName)"
+    }
+    
+    //MARK: - Methods
+    
+    @objc private func startButtonTapped() {
+        Task {
+            do {
+                try await storeManager.purchase(storeManager.products.first!)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+      
+    }
+    
+    
+    //MARK: - Constraints
     private func setUpConstraints() {
         view.addSubview(image)
         
