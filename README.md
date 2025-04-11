@@ -1,4 +1,4 @@
-Tech Stack: UIKit, StoreKit 2, Combine, SPM
+Tech Stack: UIKit, Snapkit, StoreKit 2, Combine, SPM
 
 The entry point to the app is the SceneDelegate, as mentioned before, avoiding the use of Storyboard.
 
