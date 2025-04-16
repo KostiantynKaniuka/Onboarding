@@ -14,4 +14,4 @@ Note: Errors are printed not because this is my usual error handling practice, b
 StoreManager:
 All subscriptions are implemented using StoreKit 2, and the implementation has been tested only with Xcode. All specifications can be checked in the store config file. The process starts with the loadProducts() method, and then I create a separate task for observing all transaction statuses. The purchase() method is used for buying a subscription.
 
-Note: I noticed the label indicates a trial, but I couldn't find any documentation on implementing introductory offers without connecting to an App Store account. For architecture, I used the simple MVVM pattern and didn't use a coordinator, as the app only has two screens. In a different scenario, I would inject the StoreManager inside the SceneDelegate to share the subscription state across the app.
+Note: I noticed the label indicates a trial, but I couldn't find any documentation on implementing introductory offers without connecting to an App Store account.
