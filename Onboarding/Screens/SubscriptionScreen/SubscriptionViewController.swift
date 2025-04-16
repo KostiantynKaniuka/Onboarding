@@ -10,7 +10,8 @@ import SnapKit
 
 final class SubscriptionViewController: UIViewController {
     //MARK: - Properties
-    private var storeManager = StoreManager()
+    weak var storeManager: Purchasable?
+    weak var coordinator: RootCoordinator?
     
     private let termsUrl = "https://images.steamusercontent.com/ugc/949591360446272042/2EAD55272BDBA9A2999440F5A357566256D537DF/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
     
@@ -92,6 +93,15 @@ final class SubscriptionViewController: UIViewController {
     }()
     
     //MARK: - Lifecycle
+    init(storeManager: Purchasable, coordinator: RootCoordinator) {
+        self.storeManager = storeManager
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
  
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,14 +129,16 @@ final class SubscriptionViewController: UIViewController {
           navigationItem.rightBarButtonItem = crossButton
     }
     
-    @objc private func crossButtonTapped () {
-        navigationController?.popViewController(animated: true)
+    @objc private func crossButtonTapped() {
+        coordinator?.pop()
     }
     
     @objc private func startButtonTapped() {
         Task {
             do {
-                try await storeManager.purchase(storeManager.products.first!)
+                if let manager = storeManager {
+                    try await manager.purchase(manager.products.first!)
+                }
             } catch {
                 print(error.localizedDescription)
             }

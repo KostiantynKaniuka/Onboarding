@@ -8,8 +8,14 @@
 import Foundation
 import StoreKit
 
-@MainActor
-final class StoreManager {
+ protocol Purchasable: AnyObject {
+    func updatePurchasedProducts() async
+    func purchase(_ product: Product) async throws
+    var products: [Product] { get }
+}
+
+
+final class StoreManager: Purchasable {
     private let productId = ["com.premiumsub.id"]
     
      private(set) var purchasedProductIDs = Set<String>()

@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol HTTPClientProtocol {
+protocol HTTPClientProtocol: AnyObject {
     func fetchQuizData(from urlString: String) async throws -> [QuizItem]
 }
 
