@@ -17,11 +17,12 @@ final class QuizViewController: UIViewController {
         case continueButton = "Continue"
     }
     
+    weak var coordinator: RootCoordinator?
+    
     //MARK: - Stored properties
-    private let quizViewModel = QuizViewModel(networkManager: NetworkManager())
-    private let subscriptionScreen = SubscriptionViewController()
+    private let quizViewModel: QuizViewModel?
     private var bag = Set<AnyCancellable>()
-    var indexPathToDeselect = IndexPath()
+    private var indexPathToDeselect = IndexPath()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -64,6 +65,17 @@ final class QuizViewController: UIViewController {
     }()
     
     //MARK: - Lifecycle
+    init(coordinator: RootCoordinator, quizViewModel: QuizViewModel) {
+        self.coordinator = coordinator
+        self.quizViewModel = quizViewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: Strings.appBackgroundColor.rawValue)
@@ -104,7 +116,7 @@ final class QuizViewController: UIViewController {
     
     //MARK: - Binding Views
     private func bindTableView() {
-        quizViewModel.quizItem
+        quizViewModel?.quizItem
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.quizTableView.reloadData()
@@ -113,7 +125,7 @@ final class QuizViewController: UIViewController {
     }
     
     private func bindContinueButton() {
-        quizViewModel.isButtonEnabled
+        quizViewModel?.isButtonEnabled
             .receive(on: DispatchQueue.main)
             .sink { [weak self] condition in
                 self?.continueButton.isEnabled = condition
@@ -122,29 +134,31 @@ final class QuizViewController: UIViewController {
     }
     
     @objc private func moveForward(_ sender: UIButton) {
-        quizViewModel.isButtonEnabled.value = false
+        quizViewModel?.isButtonEnabled.value = false
         if let cell = quizTableView.cellForRow(at: indexPathToDeselect) as? QuizCell {
             cell.switchTextColor(_cell: false)
         } // preventing cell text Color to became white during next stage of onboarding
         
-        if quizViewModel.onboardingStage == .final {
-            navigationController?.pushViewController(subscriptionScreen, animated: true)
+        if quizViewModel?.onboardingStage == .final {
+            coordinator?.moveToSubscription()
         }
-            let nextStage = quizViewModel.onboardingStage.next
-            quizViewModel.onboardingStage = nextStage
+        
+        if let nextStage = quizViewModel?.onboardingStage.next {
+            quizViewModel?.onboardingStage = nextStage
         }
+    }
 }
 
 //MARK: - Data Source
 
 extension QuizViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return quizViewModel.quizItem.value.answers.count
+        return quizViewModel?.quizItem.value.answers.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "quizID", for: indexPath) as? QuizCell else { return UITableViewCell() }
-        cell.setText(quizViewModel.quizItem.value.answers[indexPath.row])
+        cell.setText(quizViewModel?.quizItem.value.answers[indexPath.row])
         
         return cell
     }
@@ -155,7 +169,7 @@ extension QuizViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "quizHeader") as? QuizHeaderView
-        view?.addText(_title: "\(quizViewModel.quizItem.value.question)")
+        view?.addText(_title: "\(quizViewModel?.quizItem.value.question ?? "")")
         return view
     }
 }
@@ -164,7 +178,7 @@ extension QuizViewController: UITableViewDataSource {
 extension QuizViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        quizViewModel.isButtonEnabled.value = true
+        quizViewModel?.isButtonEnabled.value = true
         indexPathToDeselect = indexPath
         if let cell = tableView.cellForRow(at: indexPath) as? QuizCell {
             cell.switchTextColor(_cell: true)
