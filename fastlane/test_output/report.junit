@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites name='OnboardingUITests.xctest' tests='4' failures='0'>
+  <testsuite name='OnboardingUITests.OnboardingUITests' tests='2' failures='0'>
+    <testcase classname='OnboardingUITests.OnboardingUITests' name='testContinueButtonEnabledAfterSelection' time='6.601'/>
+    <testcase classname='OnboardingUITests.OnboardingUITests' name='testContinueButtonExist' time='4.215'/>
+  </testsuite>
+  <testsuite name='OnboardingUITests.OnboardingUITestsLaunchTests' tests='2' failures='0'>
+    <testcase classname='OnboardingUITests.OnboardingUITestsLaunchTests' name='testLaunch' time='5.097'/>
+    <testcase classname='OnboardingUITests.OnboardingUITestsLaunchTests' name='testLaunch' time='4.864'/>
+  </testsuite>
+</testsuites>

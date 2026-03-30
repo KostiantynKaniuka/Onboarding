@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "6D6594DA-450C-4892-BC53-4350FC20F5D4",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Onboarding.xcodeproj",
+      "identifier" : "E701C7C72DA2792600F90A81",
+      "name" : "Onboarding"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Onboarding.xcodeproj",
+        "identifier" : "E79354442F7AEC9300FF9A2E",
+        "name" : "OnboardingUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

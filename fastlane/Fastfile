@@ -2,15 +2,20 @@ default_platform(:ios)
 
 platform :ios do
 
-  desc "Build the app and export .ipa"
   lane :build do
-  build_app(
-    scheme: "Onboarding",
-    output_directory: "./build",
-    output_name: "Onboarding",
-    skip_package_ipa: true,      
-    xcargs: "CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO"
-  )
-end
+    build_app(
+      scheme: "Onboarding",
+      output_directory: "./build",
+      output_name: "Onboarding",
+      skip_package_ipa: true,
+      xcargs: "CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO"
+    )
+  end
+
+  lane :tests do
+    run_tests(
+    scheme: "Onboarding"
+    )
+  end
 
 end
