@@ -1,0 +1,15 @@
+default_platform(:ios)
+
+platform :ios do
+
+  desc "Build the app and export .ipa"
+  lane :build do
+    build_app(
+      scheme: "Onboarding",
+      export_method: "development",
+      output_directory: "./build",
+      output_name: "Onboarding.ipa"
+    )
+  end
+
+end
